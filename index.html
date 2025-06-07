@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meu Dia - Planejador 3x3</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .input-area {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .add-btn {
+      padding: 0.6em 1em;
+      background: #2e2e2e;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px;
+      font-family: 'Barlow', sans-serif;
+    }
+    .task-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-top: 8px;
+    }
+    .left-task {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .task-icon {
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .delete-btn {
+      color: #ccc;
+      transition: color 0.3s ease;
+    }
+    .delete-btn:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Meu Dia</h1>
+  <div class="subtitle" id="date-time"></div>
+  <div class="quote">"Comece pelas tarefas difíceis. O resto é descida."</div>
+
+  <div class="container">
+    <!-- PRIORIDADE -->
+    <div class="section">
+      <h2 onclick="toggleSection(this)">Prioridade</h2>
+      <div class="section-content">
+        <div class="input-area">
+          <input class="input input-alt" type="text" id="input-prioridade" placeholder="Adicionar tarefa..." onkeydown="handleKey(event, 'prioridade')"/>
+          <button class="add-btn" onclick="addTask('prioridade')">></button>
+        </div>
+        <div class="customCheckBoxHolder" id="prioridade"></div>
+      </div>
+    </div>
+
+    <!-- MÉDIA -->
+    <div class="section">
+      <h2 onclick="toggleSection(this)">Ficar de Olho</h2>
+      <div class="section-content">
+        <div class="input-area">
+          <input class="input input-alt" type="text" id="input-media" placeholder="Adicionar tarefa..." onkeydown="handleKey(event, 'media')"/>
+          <button class="add-btn" onclick="addTask('media')">></button>
+        </div>
+        <div class="customCheckBoxHolder" id="media"></div>
+      </div>
+    </div>
+
+    <!-- RÁPIDA -->
+    <div class="section">
+      <h2 onclick="toggleSection(this)">Jogo Rápido</h2>
+      <div class="section-content">
+        <div class="input-area">
+          <input class="input input-alt" type="text" id="input-rapida" placeholder="Adicionar tarefa..." onkeydown="handleKey(event, 'rapida')"/>
+          <button class="add-btn" onclick="addTask('rapida')">></button>
+        </div>
+        <div class="customCheckBoxHolder" id="rapida"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleKey(event, sectionId) {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        addTask(sectionId);
+      }
+    }
+
+    function addTask(sectionId) {
+      const input = document.querySelector(`#input-${sectionId}`);
+      const value = input.value.trim();
+      if (value !== '') {
+        const id = 'cb-' + Date.now();
+        const holder = document.getElementById(sectionId);
+
+        const taskWrapper = document.createElement('div');
+        taskWrapper.className = 'task-wrapper';
+
+        const leftPart = document.createElement('div');
+        leftPart.className = 'left-task';
+
+        const checkEmoji = document.createElement('span');
+        checkEmoji.textContent = '✅';
+        checkEmoji.className = 'task-icon';
+        checkEmoji.title = 'Marcar como concluída';
+        checkEmoji.onclick = () => {
+          checkbox.checked = true;
+          label.querySelector('.customCheckBox').style.backgroundColor = '#2d6737';
+          label.querySelector('.customCheckBox').style.color = 'white';
+        };
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = id;
+        checkbox.className = 'customCheckBoxInput';
+
+        const label = document.createElement('label');
+        label.htmlFor = id;
+        label.className = 'customCheckBoxWrapper';
+
+        const box = document.createElement('div');
+        box.className = 'customCheckBox';
+
+        const inner = document.createElement('div');
+        inner.className = 'inner';
+        inner.textContent = value;
+
+        box.appendChild(inner);
+        label.appendChild(box);
+
+        const deleteBtn = document.createElement('span');
+        deleteBtn.textContent = '✖️';
+        deleteBtn.className = 'task-icon delete-btn';
+        deleteBtn.title = 'Excluir tarefa';
+        deleteBtn.onclick = () => taskWrapper.remove();
+
+        leftPart.appendChild(checkEmoji);
+        leftPart.appendChild(checkbox);
+        leftPart.appendChild(label);
+
+        taskWrapper.appendChild(leftPart);
+        taskWrapper.appendChild(deleteBtn);
+
+        holder.appendChild(taskWrapper);
+        input.value = '';
+      }
+    }
+
+    function toggleSection(clickedTitle) {
+      const section = clickedTitle.closest('.section');
+      document.querySelectorAll('.section').forEach(s => {
+        if (s !== section) s.classList.remove('active');
+      });
+      section.classList.toggle('active');
+    }
+
+    function updateDateTime() {
+      const now = new Date();
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const date = now.toLocaleDateString('pt-BR', options);
+      const time = now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      document.getElementById('date-time').textContent = `${date} — ${time}`;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 60000);
+  </script>
+</body>
+</html>

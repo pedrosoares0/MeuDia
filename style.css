@@ -1,0 +1,161 @@
+:root {
+  --border-height: 2px;
+  --border-before-color: #444;
+  --border-after-color: #8a17c8;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  font-family: 'Barlow', sans-serif;
+  background-color: #0f0f0f;
+  color: #f1f1f1;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.2rem;
+}
+
+.subtitle {
+  color: #aaa;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+}
+
+.quote {
+  font-style: italic;
+  font-weight: 300;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.section {
+  background: #1a1a1a;
+  padding: 1rem;
+  border-radius: 12px;
+  width: 360px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  transform: scale(1);
+  cursor: default;
+}
+
+.section:hover {
+  background-color: #1f1f1f;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+  transform: scale(1.02);
+}
+
+.section h2 {
+  margin-bottom: 0.8rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: all 0.4s ease;
+}
+
+.section.active .section-content {
+  max-height: 600px;
+  opacity: 1;
+  margin-top: 1rem;
+}
+
+/* INPUT ESTILIZADO */
+.form-control {
+  position: relative;
+  margin-bottom: 1.2rem;
+}
+
+.input {
+  color: #fff;
+  font-size: 1rem;
+  background-color: transparent;
+  width: 100%;
+  box-sizing: border-box;
+  padding-inline: 0.5em;
+  padding-block: 0.7em;
+  border: none;
+  border-bottom: var(--border-height) solid var(--border-before-color);
+}
+
+.input-border {
+  position: absolute;
+  background: var(--border-after-color);
+  width: 0%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  transition: width 0.3s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+}
+
+.input:focus {
+  outline: none;
+}
+
+.input:focus + .input-border {
+  width: 100%;
+}
+
+/* CHECKBOX ESTILIZADO */
+.customCheckBoxHolder {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.customCheckBoxInput {
+  display: none;
+}
+
+.customCheckBoxWrapper {
+  display: block;
+}
+
+.customCheckBox {
+  position: relative;
+  cursor: pointer;
+  padding: 2px 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 5px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  justify-content: center;
+  box-shadow: inset 0 2px 1px rgba(0, 0, 0, 0.2);
+}
+
+.customCheckBox:hover {
+  background-color: #2c2c2c;
+  color: white;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.1);
+}
+
+.customCheckBox .inner {
+  font-size: 16px;
+  font-weight: 600;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.customCheckBoxInput:checked + .customCheckBoxWrapper .customCheckBox {
+  background-color: #2d6737;
+  color: white;
+}
